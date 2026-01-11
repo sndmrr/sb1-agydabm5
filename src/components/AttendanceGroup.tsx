@@ -114,7 +114,7 @@ const AttendanceGroup: React.FC<AttendanceGroupProps> = ({ type, onBack }) => {
       icon: FileText,
       color: "from-indigo-500 to-indigo-600",
       hoverColor: "hover:from-indigo-600 hover:to-indigo-700",
-      onClick: () => window.open('https://docs.google.com/spreadsheets/d/1OYC7vPUvGdIAG3Qcec0sReYS3b_UvUU6f54LmXt4jZg/edit?usp=sharing', '_blank'),
+      onClick: () => window.location.href = 'https://docs.google.com/spreadsheets/d/1OYC7vPUvGdIAG3Qcec0sReYS3b_UvUU6f54LmXt4jZg/edit?usp=sharing',
       available: true
     }
   ];
