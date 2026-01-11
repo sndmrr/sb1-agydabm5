@@ -54,6 +54,31 @@ export interface ButtonSetting {
   updated_at: string;
 }
 
+export interface Employee {
+  id: string;
+  name: string;
+  position: string;
+  unit: string;
+  signature_url: string;
+  require_photo_documentation: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface AttendanceRecord {
+  id: string;
+  employee_id: string;
+  date: string;
+  work_type: 'Masuk' | 'Day Off';
+  location?: string;
+  activity_detail?: string;
+  notes?: string;
+  photo_url: string;
+  created_at: string;
+  updated_at: string;
+  employees?: Employee;
+}
+
 // App Settings functions
 export const getAppSetting = async (key: string): Promise<string> => {
   const { data, error } = await supabase
@@ -261,6 +286,228 @@ export const updateButtonSetting = async (id: string, isEnabled: boolean): Promi
     console.error('Error updating button setting:', error);
     throw error;
   }
+};
+
+// Employee CRUD functions
+export const getAllEmployees = async (): Promise<Employee[]> => {
+  const { data, error } = await supabase
+    .from('employees')
+    .select('*')
+    .order('name');
+
+  if (error) throw error;
+  return data || [];
+};
+
+export const getEmployeeById = async (id: string): Promise<Employee> => {
+  const { data, error } = await supabase
+    .from('employees')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (error) throw error;
+  return data;
+};
+
+export const addEmployee = async (employee: Omit<Employee, 'id' | 'created_at' | 'updated_at'>): Promise<Employee> => {
+  const { data, error } = await supabase
+    .from('employees')
+    .insert({
+      ...employee,
+      updated_at: new Date().toISOString()
+    })
+    .select('*')
+    .single();
+
+  if (error) throw error;
+  return data;
+};
+
+export const updateEmployee = async (id: string, updates: Partial<Employee>): Promise<Employee> => {
+  const { data, error } = await supabase
+    .from('employees')
+    .update({
+      ...updates,
+      updated_at: new Date().toISOString()
+    })
+    .eq('id', id)
+    .select('*')
+    .single();
+
+  if (error) throw error;
+  return data;
+};
+
+export const deleteEmployee = async (id: string): Promise<void> => {
+  const { error } = await supabase
+    .from('employees')
+    .delete()
+    .eq('id', id);
+
+  if (error) throw error;
+};
+
+// Attendance Records CRUD functions
+export const getAttendanceRecords = async (startDate?: string, endDate?: string): Promise<AttendanceRecord[]> => {
+  let query = supabase
+    .from('attendance_records')
+    .select(`
+      *,
+      employees (
+        id,
+        name,
+        position,
+        unit
+      )
+    `)
+    .order('date', { ascending: false })
+    .order('employees(name)');
+
+  if (startDate) {
+    query = query.gte('date', startDate);
+  }
+  if (endDate) {
+    query = query.lte('date', endDate);
+  }
+
+  const { data, error } = await query;
+
+  if (error) throw error;
+  return data || [];
+};
+
+export const getAttendanceRecordsByEmployee = async (employeeId: string, startDate?: string, endDate?: string): Promise<AttendanceRecord[]> => {
+  let query = supabase
+    .from('attendance_records')
+    .select(`
+      *,
+      employees (
+        id,
+        name,
+        position,
+        unit
+      )
+    `)
+    .eq('employee_id', employeeId)
+    .order('date', { ascending: false });
+
+  if (startDate) {
+    query = query.gte('date', startDate);
+  }
+  if (endDate) {
+    query = query.lte('date', endDate);
+  }
+
+  const { data, error } = await query;
+
+  if (error) throw error;
+  return data || [];
+};
+
+export const checkAttendanceExists = async (employeeId: string, date: string): Promise<boolean> => {
+  const { data, error } = await supabase
+    .from('attendance_records')
+    .select('id')
+    .eq('employee_id', employeeId)
+    .eq('date', date)
+    .single();
+
+  return !error && data !== null;
+};
+
+export const addAttendanceRecord = async (record: Omit<AttendanceRecord, 'id' | 'created_at' | 'updated_at' | 'employees'>): Promise<AttendanceRecord> => {
+  const { data, error } = await supabase
+    .from('attendance_records')
+    .insert({
+      ...record,
+      updated_at: new Date().toISOString()
+    })
+    .select(`
+      *,
+      employees (
+        id,
+        name,
+        position,
+        unit
+      )
+    `)
+    .single();
+
+  if (error) throw error;
+  return data;
+};
+
+export const updateAttendanceRecord = async (id: string, updates: Partial<AttendanceRecord>): Promise<AttendanceRecord> => {
+  const { data, error } = await supabase
+    .from('attendance_records')
+    .update({
+      ...updates,
+      updated_at: new Date().toISOString()
+    })
+    .eq('id', id)
+    .select(`
+      *,
+      employees (
+        id,
+        name,
+        position,
+        unit
+      )
+    `)
+    .single();
+
+  if (error) throw error;
+  return data;
+};
+
+export const deleteAttendanceRecord = async (id: string): Promise<void> => {
+  const { error } = await supabase
+    .from('attendance_records')
+    .delete()
+    .eq('id', id);
+
+  if (error) throw error;
+};
+
+export const getAttendanceSummary = async (startDate: string, endDate: string): Promise<{ employee: Employee; present: number; dayOff: number }[]> => {
+  const { data, error } = await supabase
+    .from('attendance_records')
+    .select(`
+      employee_id,
+      work_type,
+      employees (
+        id,
+        name,
+        position,
+        unit
+      )
+    `)
+    .gte('date', startDate)
+    .lte('date', endDate);
+
+  if (error) throw error;
+
+  const summary: { [key: string]: { employee: Employee; present: number; dayOff: number } } = {};
+  
+  data?.forEach(record => {
+    const employeeId = record.employee_id;
+    if (!summary[employeeId]) {
+      summary[employeeId] = {
+        employee: record.employees,
+        present: 0,
+        dayOff: 0
+      };
+    }
+    
+    if (record.work_type === 'Masuk') {
+      summary[employeeId].present++;
+    } else {
+      summary[employeeId].dayOff++;
+    }
+  });
+
+  return Object.values(summary);
 };
 
 // Helper function to convert file to base64
