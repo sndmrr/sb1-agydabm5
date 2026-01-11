@@ -3,12 +3,11 @@ import { MapPin, ExternalLink, Sprout, Leaf, Users, ClipboardList, FileText, Use
 import LoadingScreen from './components/LoadingScreen';
 import AttendanceGroup from './components/AttendanceGroup';
 import AdminSettings from './components/AdminSettings';
-import AdminEmployeeManagement from './components/AdminEmployeeManagement';
 import { getAllAppSettings, getAllButtonSettings } from './lib/supabase';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
-  const [currentView, setCurrentView] = useState<'home' | 'employee-attendance' | 'admin-settings' | 'admin-employees'>('home');
+  const [currentView, setCurrentView] = useState<'home' | 'employee-attendance' | 'admin-settings'>('home');
   const [photos, setPhotos] = useState({
     header: 'https://i.postimg.cc/ZnWHPbw9/T4-T-Logo-Baru-2-1.jpg',
     roster: 'https://via.placeholder.com/600x300/e5f3ff/1e40af?text=Jadwal+Roster',
@@ -89,15 +88,6 @@ function App() {
       <AdminSettings
         onBack={() => setCurrentView('home')}
         onPhotoUpdate={handlePhotoUpdate}
-      />
-    );
-  }
-
-  // Show admin employee management if requested
-  if (currentView === 'admin-employees') {
-    return (
-      <AdminEmployeeManagement
-        onBack={() => setCurrentView('home')}
       />
     );
   }
