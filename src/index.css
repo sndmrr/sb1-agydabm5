@@ -1,0 +1,387 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Modern CSS Variables */
+:root {
+  --primary-green: #16a34a;
+  --primary-emerald: #10b981;
+  --primary-teal: #0d9488;
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(255, 255, 255, 0.2);
+}
+
+/* Enhanced Glassmorphism */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+}
+
+/* Gradient Text Utilities */
+.gradient-text-emerald-cyan {
+  background: linear-gradient(135deg, #10b981, #06b6d4);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-blue-purple {
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-orange-pink {
+  background: linear-gradient(135deg, #f97316, #ec4899);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-violet-fuchsia {
+  background: linear-gradient(135deg, #8b5cf6, #d946ef);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-amber-lime {
+  background: linear-gradient(135deg, #f59e0b, #84cc16);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Enhanced button hover effects */
+.btn-hover-effect {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-hover-effect::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-hover-effect:hover::before {
+  left: 100%;
+}
+
+/* Custom animations for planting theme */
+@keyframes grow-up {
+  from {
+    height: 0;
+  }
+  to {
+    height: 40px;
+  }
+}
+
+@keyframes fade-in-scale {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 0) scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes float-leaf {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+    transform: translateY(-10px) rotate(90deg);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(0) rotate(180deg);
+  }
+  75% {
+    opacity: 1;
+    transform: translateY(-5px) rotate(270deg);
+  }
+  100% {
+    transform: translateY(0) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.animate-grow-up {
+  animation: grow-up 1s ease-out forwards;
+}
+
+.animate-fade-in-scale {
+  animation: fade-in-scale 0.8s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in 1s ease-out forwards;
+}
+
+.animate-progress {
+  animation: progress 4s ease-out forwards;
+}
+
+.animate-float-leaf {
+  animation: float-leaf 4s ease-in-out infinite;
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+.animate-scaleIn {
+  animation: scaleIn 0.3s ease-out forwards;
+}
+
+/* Planting theme animations */
+@keyframes gentle-sway {
+  0%, 100% {
+    transform: translateX(0) rotate(0deg);
+  }
+  25% {
+    transform: translateX(5px) rotate(3deg);
+  }
+  75% {
+    transform: translateX(-5px) rotate(-3deg);
+  }
+}
+
+@keyframes organic-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
+@keyframes leaf-dance {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-12px) rotate(45deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(90deg);
+  }
+  75% {
+    transform: translateY(-12px) rotate(135deg);
+  }
+  100% {
+    transform: translateY(0) rotate(180deg);
+  }
+}
+
+/* New modern animations */
+@keyframes float-up {
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(34, 197, 94, 0.6);
+  }
+}
+
+.animate-float-up {
+  animation: float-up 0.8s ease-out forwards;
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-gentle-sway {
+  animation: gentle-sway 4s ease-in-out infinite;
+}
+
+.animate-organic-pulse {
+  animation: organic-pulse 2.5s ease-in-out infinite;
+}
+
+.animate-leaf-dance {
+  animation: leaf-dance 6s linear infinite;
+}
+
+/* Performance optimizations */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Optimize images for faster loading */
+img {
+  content-visibility: auto;
+}
+
+/* Reduce blur effects on mobile for better performance */
+@media (max-width: 768px) {
+  .blur-xl {
+    backdrop-filter: blur(6px);
+  }
+  
+  .blur-2xl {
+    backdrop-filter: blur(10px);
+  }
+  
+  .blur-3xl {
+    backdrop-filter: blur(14px);
+  }
+  
+  .blur-lg {
+    backdrop-filter: blur(4px);
+  }
+  
+  .blur-md {
+    backdrop-filter: blur(3px);
+  }
+  
+  /* Reduce complex animations on mobile */
+  .animate-shimmer {
+    animation: none;
+  }
+  
+  .animate-pulse-glow {
+    animation: none;
+  }
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Optimize animations for mobile */
+@media (max-width: 768px) {
+  .animate-pulse {
+    animation-duration: 2.5s;
+  }
+  
+  .animate-bounce {
+    animation-duration: 1.5s;
+  }
+  
+  .animate-spin {
+    animation-duration: 2s;
+  }
+  
+  /* Simplify hover effects on mobile */
+  .group:hover .group-hover\:scale-110 {
+    transform: scale(1.05);
+  }
+  
+  .group:hover .group-hover\:-translate-y-2 {
+    transform: translateY(-4px);
+  }
+}
+
+/* Enhanced responsive design */
+@media (max-width: 640px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* Dark mode support (future enhancement) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --glass-bg: rgba(0, 0, 0, 0.8);
+    --glass-border: rgba(255, 255, 255, 0.1);
+  }
+}
